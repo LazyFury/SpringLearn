@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/base :: layout(~{::main},'login')}" lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div th:fragment="main"  class="container xl:w-4/5 mx-auto flex flex-col items-center justify-center" style="min-height:500px">
+    <form class="flex flex-col bg-gray-400 p-4" method="post" action="/signup">
+        <label><span>注册</span></label>
+        <label class="flex flex-col">
+            <span >用户名/账户</span>
+            <input type="text" name="username" placeholder="请输入用户名">
+        </label>
+        <label class="flex flex-col">
+            <span >密码</span>
+            <input type="text" name="password" placeholder="请输入密码">
+        </label>
+        <button type="submit" class="border mt-1">登录</button>
+    </form>
+</div>
+</body>
+</html>

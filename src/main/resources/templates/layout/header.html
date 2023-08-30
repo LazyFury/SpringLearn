@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+
+<div  th:fragment="header">
+    <div class="bg-gray-100">
+        <div class="container mx-auto xl:w-4/5 flex flex-row items-center justify-between">
+            <span class="text-sm text-gray-500 mr-2">收藏本站</span>
+
+            <div sec:authorize="isAuthenticated()" class="flex flex-row items-center">
+                <span sec:authentication="name"></span>
+                <span class="text-gray-500  mx-1">/</span>
+                <a href="/logout">logout</a>
+                <span class="material-symbols-outlined">logout</span>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+                <a href="/login">login in</a>
+                <span class="text-gray-500  mx-1">/</span>
+                <a href="/signup">sign up</a>
+            </div>
+
+        </div>
+    </div>
+    <header class="container mx-auto xl:w-4/5">
+        <div class="py-2">
+            <h1 class="text-4xl font-thin">Hello Spring Boot Home Page.1</h1>
+            <p>now,surprise me!</p>
+        </div>
+        <div class="bg-slate-800 text-white p-4 px-5 flex flex-row">
+            <a href="/">Home</a>
+            <span class="text-gray-500 mx-4">/</span>
+            <a href="/shop" class="flex flex-row items-center">
+                <span class="material-symbols-outlined">shopping_cart_checkout</span>
+                <span>Shop</span></a>
+            <span class="text-gray-500  mx-4">/</span>
+            <a href="/blog">Blog</a>
+            <span class="text-gray-500  mx-4">/</span>
+            <a href="/about">About</a>
+        </div>
+    </header>
+</div>
+</html>

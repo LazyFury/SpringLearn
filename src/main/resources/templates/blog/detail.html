@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="layout/base :: layout(~{::main},'article')" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment="main" class="container xl:w-4/5 mx-auto" style="min-height:500px">
+        <div th:if="${detail}">
+            <h1 th:text="${detail.title}" class="text-3xl"></h1>
+            <div>
+                <div th:each="tag : ${detail.tags}" class="inline-block bg-gray-300 text-white px-2" >
+                    <span th:text="${tag.refTag.name}"></span>
+                </div>
+            </div>
+
+            <div class="text-gray-400">
+                <span th:text="'发布时间:' + ${detail.created}"></span>
+                <span th:text="'更新时间:' + ${detail.updated}"></span>
+            </div>
+
+
+            <div class="mt-4" th:utext="${detail.content} ?: '没有添加内容~'"></div>
+
+
+            <div class="my-4">
+                <p th:text="${detail.description} ?: '没有简介~'">...</p>
+
+                <div>
+                    <span th:text="${detail.ext}"></span>
+                </div>
+                <div>
+                    <span th:text="${detail.config} ? ${detail.config.toJson} : '没有配置内容'"></span>
+                </div>
+            </div>
+        </div>
+        <div th:if="!${detail}">
+            not found
+        </div>
+    </div>
+</body>
+</html>

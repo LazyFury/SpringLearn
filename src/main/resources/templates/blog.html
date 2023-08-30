@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="layout/base :: layout(~{:: main},'blog')" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment="main" class="container mx-auto xl:w-4/5 my-4 flex flex-row items-start gap-2" style="min-height:480px">
+        <div class="right w-1/5 bg-gray-300 p-2">
+            category
+        </div>
+        <div class="right w-4/5">
+            <h1 class="text-2xl">blogs</h1>
+            <div class="flex flex-col gap-2">
+                <div th:each="a : ${articles.content}" class="p-2 bg-gray-100">
+                    <a th:href="'/blog/' + ${a.id}">
+                        <h3 class="text-xl" th:text="${a.title}">文章标题</h3>
+                    </a>
+                    <p th:text="${a.description} ?: '没有简介~'">...</p>
+                    <div class="text-gray-400">
+                        <span th:text="'发布时间:' + ${a.created}"></span>
+                        <span th:text="'更新时间:' + ${a.updated}"></span>
+                    </div>
+                    <div>
+                        <div th:each="tag : ${a.tags}" class="inline-block bg-gray-300 text-white px-2" >
+                            <span th:text="${tag.refTag.name}"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <span th:text="${a.ext}"></span>
+                    </div>
+                    <div>
+                        <span th:text="${a.config} ? ${a.config.toJson} : 'no config'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
