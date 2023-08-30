@@ -7,8 +7,6 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY
@@ -21,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam
 class LoginController {
 
     @Autowired
-    lateinit var userRepository: CustomUserRepository;
+    lateinit var userRepository: CustomUserRepository
 
     @Autowired
     lateinit var passwordEncoder: PasswordEncoder
@@ -37,24 +35,18 @@ class LoginController {
         return "login"
     }
 
-    class Authority(var role:String):GrantedAuthority {
-        override fun getAuthority(): String {
-            return role;
-        }
-    }
-
     @Override
     @GetMapping("/login_post") fun login(req:HttpServletRequest,@RequestParam username:String?,@RequestParam password:String?):String{
         if(username != null && password != null){
-            System.out.printf("%s: %s\n",username,password);
-            var userDetails = userDetailsService.loadUserByUsername(username)
-            var auth = authenticationManager.authenticate(
+            System.out.printf("%s: %s\n",username,password)
+            val userDetails = userDetailsService.loadUserByUsername(username)
+            val auth = authenticationManager.authenticate(
                 UsernamePasswordAuthenticationToken(username,password,userDetails.authorities)
             )
             System.out.printf("is auth %s\n",auth.isAuthenticated)
-            var context = SecurityContextHolder.getContext();
+            val context = SecurityContextHolder.getContext()
             req.session.setAttribute(SPRING_SECURITY_CONTEXT_KEY,context)
-            context.authentication = auth;
+            context.authentication = auth
             return "redirect:/"
 
         }
@@ -69,8 +61,8 @@ class LoginController {
         if(userRepository.existsByUsername(username)){
             throw IllegalStateException("exists by username")
         }
-        val user = User(username = username, password = passwordEncoder.encode(password), id = null, email = "");
-        userRepository.save(user);
+        val user = User(username = username, password = passwordEncoder.encode(password), id = null, email = "")
+        userRepository.save(user)
         return "redirect:/login"
     }
 

@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.core.userdetails.UserDetails
-import org.thymeleaf.extras.springsecurity6.auth.AuthUtils
 
 
 @Entity

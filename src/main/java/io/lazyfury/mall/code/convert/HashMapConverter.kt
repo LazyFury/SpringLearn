@@ -10,7 +10,7 @@ class HashMapConverter:AttributeConverter<HashMap<String, Any>,String> {
 
     override fun convertToEntityAttribute(dbData: String?): HashMap<String, Any> {
         if(dbData.isNullOrEmpty()){
-            return  HashMap<String,Any>();
+            return  HashMap()
         }
         return JSON.parseObject(dbData, HashMap<String, Any>().javaClass)
     }

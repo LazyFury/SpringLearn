@@ -17,6 +17,9 @@ public class SEOConfig {
     List<String> keywords;
     String author;
 
+    /**
+     * @return String
+     */
     public String getKeywordsString() {
         return String.join(", ", keywords);
     }

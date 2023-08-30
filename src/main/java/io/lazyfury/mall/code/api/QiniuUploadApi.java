@@ -39,7 +39,7 @@ public class QiniuUploadApi {
     String token;
     LocalDateTime tokenExpress = LocalDateTime.now().minusHours(1);
     Auth auth;
-    String key = "testserver";
+
 
     @Autowired
     QiniuUploadApi(){
@@ -71,13 +71,13 @@ public class QiniuUploadApi {
         var bytes  = inputStream.readAllBytes();
         System.out.println(bytes.length);
         var body = RequestBody.create(bytes);
-        System.out.println(body.toString());
+        System.out.println(body);
         var req = new Request.Builder()
                 .url("%s/buckets/%s/objects/%s/uploads/%s/%d".formatted(baseUrl,bucketName,objName,uploadId,partNumber))
                 .addHeader("Content-Type","application/octet-stream")
                 .addHeader("Authorization","UpToken "+token)
                 .put(body).build();
-        System.out.println(req.toString());
+        System.out.println(req);
         var res = client.newCall(req).execute();
         assert(res.body()!=null);
         return res.body().string();
@@ -91,7 +91,7 @@ public class QiniuUploadApi {
                 .addHeader("Authorization","UpToken "+token)
                 .get()
                 .build();
-        System.out.println(req.toString());
+        System.out.println(req);
         var res = client.newCall(req).execute();
         assert (res.body()!=null);
         return res.body().string();
@@ -100,7 +100,7 @@ public class QiniuUploadApi {
 
     @PostMapping("/complete")
     public String complete(@org.springframework.web.bind.annotation.RequestBody ArrayList<Part> parts, @RequestParam String uploadId, @RequestParam String objName, @RequestParam String fName, @RequestParam String fType) throws IOException {
-        var map = new HashMap<String,Object>();
+        var map = new HashMap<>();
         System.out.println(objName);
         map.put("parts",parts);
         map.put("token",token);
@@ -123,10 +123,6 @@ public class QiniuUploadApi {
     @GetMapping("/init")
     public HashMap<String, Object> initialize(@RequestParam String fName,@RequestParam String fType) throws IOException {
         var token = getAuth();
-       /* var body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("name","hello")
-                .addFormDataPart("token",token)
-                .build();*/
         /*var objName = UUID.randomUUID().toString();*/
         var objNameBase64 =  Base64.getEncoder().encodeToString(fName.getBytes());
         var req = new Request.Builder()

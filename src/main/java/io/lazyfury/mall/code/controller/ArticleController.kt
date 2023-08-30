@@ -1,6 +1,6 @@
 package io.lazyfury.mall.code.controller
 
-import io.lazyfury.mall.code.entity.Article
+
 import io.lazyfury.mall.code.repository.ArticleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -22,14 +22,14 @@ class ArticleController {
 
     @GetMapping("")
     fun getArticles(@RequestParam(defaultValue = "1") page: Int): ModelAndView{
-        val view = ModelAndView("blog");
+        val view = ModelAndView("blog")
         view.addObject("articles",repo.findAll(PageRequest.of(page-1,10)))
-        return view;
+        return view
     }
 
     @GetMapping("/{id}") fun articleDetail(@PathVariable id:Int):ModelAndView{
         val view = ModelAndView("blog/detail")
         view.addObject("detail",repo.findById(id).getOrNull())
-        return view;
+        return view
     }
 }

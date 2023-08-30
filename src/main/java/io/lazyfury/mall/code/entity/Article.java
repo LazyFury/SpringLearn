@@ -1,16 +1,18 @@
 package io.lazyfury.mall.code.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.lazyfury.mall.code.convert.ArticleJsonConverter;
 import io.lazyfury.mall.code.convert.HashMapConverter;
-import io.lazyfury.mall.code.convert.UuidConverter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Data
 @Entity
@@ -44,15 +46,15 @@ public class Article extends Base {
 
 
     @OneToMany(mappedBy = "article",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-    List<ArticleTagRef> tags = new ArrayList<ArticleTagRef>();
+    List<ArticleTagRef> tags = new ArrayList<>();
 
     @Transient
     List<Long> tag_ids;
     @PrePersist
     void beforeCreate(){
-        var map  = new HashMap<String,Object>();
-        map.put("hello",1);
-        map.put("img","/sxxx/ss.png");
-        ext = map;
+        if(ext==null){
+            ext = new HashMap<>();
+        }
+
     }
 }

@@ -1,7 +1,5 @@
 package io.lazyfury.mall.code.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.lazyfury.mall.code.repository.ArticleTagRepository;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
