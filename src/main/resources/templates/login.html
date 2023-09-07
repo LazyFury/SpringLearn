@@ -6,20 +6,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div th:fragment="main"  class="container xl:w-4/5 mx-auto flex flex-col items-center justify-center" style="min-height:500px">
-        <form class="flex flex-col bg-gray-400 p-4" method="get" action="/login_post">
-            <label><span>登录</span></label>
-            <hr>
-            <label class="flex flex-col">
-                <span >用户名/账户</span>
-                <input type="text" name="username" placeholder="请输入用户名">
-            </label>
-            <label class="flex flex-col">
-                <span >密码</span>
-                <input type="text" name="password" placeholder="请输入密码">
-            </label>
-            <button type="submit" class="border mt-1">登录</button>
-        </form>
-    </div>
+<div th:fragment="main" class="container xl:w-4/5 mx-auto flex flex-col items-center justify-center"
+     style="min-height:500px;">
+    <form class="flex flex-col bg-gray-400 p-4" style="width:500px;line-height:3rem" method="get" action="/login_post">
+        <label><span class="text-3xl">登录</span></label>
+        <hr>
+        <label class="flex flex-col">
+            <span>用户名/账户</span>
+            <input class="px-2" type="text" name="username" placeholder="请输入用户名">
+        </label>
+        <label class="flex flex-col">
+            <span>密码</span>
+            <input class="px-2" type="text" name="password" placeholder="请输入密码">
+        </label>
+        <button type="submit" class="ring mt-10 bg-blue-500 color-white">登录</button>
+    </form>
+</div>
 </body>
 </html>

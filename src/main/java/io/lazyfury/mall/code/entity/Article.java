@@ -21,40 +21,42 @@ import java.util.List;
 public class Article extends Base {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name ="article_id")
+    @Column(name = "article_id")
     long id;
 
     @Comment(value = "标题")
     @Nonnull
-    @Schema(name = "title",description = "Title of the article")
-    private  String title;
+    @Schema(name = "title", description = "Title of the article")
+    private String title;
 
     @Column(length = 1500)
-    private  String description;
+    private String description;
 
     @Lob
     @Column(columnDefinition = "text")
     String Content;
 
-    @Column(length = 3200,columnDefinition = "text")
+    @Column(length = 3200, columnDefinition = "text")
     @Convert(converter = ArticleJsonConverter.class)
     ArticleJsonConfig config;
 
     @Column(columnDefinition = "text")
     @Convert(converter = HashMapConverter.class)
-    HashMap<String,Object> ext;
+    HashMap<String, Object> ext;
 
 
-    @OneToMany(mappedBy = "article",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @OneToMany(mappedBy = "article", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     List<ArticleTagRef> tags = new ArrayList<>();
 
     @Transient
     List<Long> tag_ids;
+
     @PrePersist
-    void beforeCreate(){
-        if(ext==null){
+    void beforeCreate() {
+        if (ext == null) {
             ext = new HashMap<>();
         }
 
     }
+
 }

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,7 +37,7 @@ public class SecurityConfig {
     PasswordEncoder passwordEncoder;
 
     @Bean
-    public SecurityFilterChain configuration(HttpSecurity http,AuthenticationProvider provider) throws Exception {
+    public SecurityFilterChain configuration(HttpSecurity http, AuthenticationProvider provider) throws Exception {
         http.userDetailsService(userDetailService).csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(provider)
                 .authorizeHttpRequests(
@@ -45,15 +46,13 @@ public class SecurityConfig {
                                         new MvcRequestMatcher(new HandlerMappingIntrospector(), "/auth/**")
                                 ).authenticated().anyRequest().permitAll()
 
-                ).formLogin(login->login.usernameParameter("username")
-                                .passwordParameter("password")
-                                .loginPage("/login").defaultSuccessUrl("/").permitAll());
+                );
         return http.build();
     }
 
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailService);
         provider.setPasswordEncoder(passwordEncoder);
@@ -61,19 +60,28 @@ public class SecurityConfig {
             @Override
             public Collection<? extends GrantedAuthority> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
                 System.out.println("get authorities");
-                return AuthorityUtils.createAuthorityList("user","admin");
+                return AuthorityUtils.createAuthorityList("user", "admin");
             }
         });
         return provider;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationProvider provider){
+    public AuthenticationManager authenticationManager(AuthenticationProvider provider) {
         /*return new ProviderManager(provider);*/
         return new AuthenticationManager() {
             @Override
             public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-                System.out.println(authentication.isAuthenticated());
+                System.out.println(authentication.getCredentials());
+                System.out.println(authentication.getPrincipal());
+                System.out.println(authentication.getAuthorities());
+                System.out.println(authentication.getDetails());
+
+                var username = (String) authentication.getPrincipal();
+                var userDetails = userDetailService.loadUserByUsername(username);
+                if (!passwordEncoder.matches((String) authentication.getCredentials(), userDetails.getPassword())) {
+                    throw new BadCredentialsException("密码错误");
+                }
                 return authentication;
             }
         };

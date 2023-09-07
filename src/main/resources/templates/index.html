@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html th:replace="layout/base :: layout(~{::main},'hello world!')" lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html th:replace="~{layout/base :: layout(~{::main},'hello world!')}" lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <body class="">
-    <main th:fragment="main" class="container mx-auto xl:w-4/5 my-4 flex flex-row" style="min-height:480px">
-        <div class="md:w-1/5 max-sm:hidden bg-gray-300 p-2">
-            <a href="" class="hover:bg-gray-600 hover:text-white block p-2 ">Downloads</a>
-            <a href="" class="hover:bg-gray-600 hover:text-white block p-2 ">Document</a>
-            <a href="" class="hover:bg-gray-600 hover:text-white block p-2 ">More</a>
-        </div>
-        <div class="md:w-4/5 max-sm:w-full ml-2 max-sm:mr-2">
-            <div class="grid sm:grid-cols-3 gap-2 mx-xm:grid-cols-1">
-                <div class="h-40 hover:shadow-lg bg-gray-500 flex flex-row items-center justify-center text-white">
-                    <span class="text-3xl font-thin">发布应用</span>
-                </div>
-                <div class="h-40 hover:shadow-lg bg-gray-500 flex flex-row items-center justify-center text-white">
-                    <span class="text-3xl font-thin">添加邀请码</span>
-                </div>
-                <div class="h-40 hover:shadow-lg bg-gray-500 flex flex-row items-center justify-center text-white">
-                    <span class="text-3xl font-thin">...</span>
-                </div>
+<main th:fragment="main" class="container mx-auto xl:w-4/5 my-4 flex flex-row" style="min-height:480px">
+    <div class="md:w-1/5 max-sm:hidden bg-gray-300 p-2">
+        <a href="" class="hover:bg-gray-600 hover:text-white block p-2 ">Downloads</a>
+        <a href="" class="hover:bg-gray-600 hover:text-white block p-2 ">Document</a>
+        <a href="" class="hover:bg-gray-600 hover:text-white block p-2 ">More</a>
+    </div>
+    <div class="md:w-4/5 max-sm:w-full ml-2 max-sm:mr-2">
+        <div class="grid sm:grid-cols-3 gap-2 mx-xm:grid-cols-1">
+            <div class="h-40 hover:shadow-lg bg-gray-500 flex flex-row items-center justify-center text-white">
+                <span class="text-3xl font-thin">发布应用</span>
             </div>
-            <h1 class="text-2xl">Title</h1>
-            <p th:text="${name}"></p>
+            <div class="h-40 hover:shadow-lg bg-gray-500 flex flex-row items-center justify-center text-white">
+                <span class="text-3xl font-thin">添加邀请码</span>
+            </div>
+            <div class="h-40 hover:shadow-lg bg-gray-500 flex flex-row items-center justify-center text-white">
+                <span class="text-3xl font-thin">...</span>
+            </div>
         </div>
-    </main>
+        <h1 class="text-2xl">Title</h1>
+        <p th:text="${name}"></p>
+    </div>
+</main>
 </body>
 </html>

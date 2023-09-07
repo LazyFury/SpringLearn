@@ -16,13 +16,13 @@ public class ArticleTag extends Base {
     @Column(name = "tag_id")
     long id;
 
-    public ArticleTag(String name){
+    public ArticleTag(String name) {
         this.name = name;
     }
 
-    public ArticleTag(long id){
+    public ArticleTag(long id) {
         this.id = id;
     }
 
-    String name;
+    public String name;
 }

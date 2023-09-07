@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
@@ -20,44 +21,45 @@ import java.util.List;
 
 /**
  * @author suke
- * @apiNote  Application
+ * @apiNote Application
  */
 @EnableCaching
 @SpringBootApplication
-@OpenAPIDefinition(info = @Info(title = "Learn Project",description = "这份文档故意留下的，你可以做任何你喜欢的，在不侵犯其他用户权益的前提下"))
+@OpenAPIDefinition(info = @Info(title = "Learn Project", description = "这份文档故意留下的，你可以做任何你喜欢的，在不侵犯其他用户权益的前提下"))
+@ComponentScan(basePackages = "io.lazyfury")
 public class CodeApplication {
 
-	@Value("${server.port}")
-	protected Long serverPort;
+    @Value("${server.port}")
+    protected Long serverPort;
 
-	@Autowired
-	ServerConfigurationProperties configuration;
+    @Autowired
+    ServerConfigurationProperties configuration;
 
-	public static void main(String[] args) {
-		SpringApplication.run(CodeApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CodeApplication.class, args);
+    }
 
-	@PostConstruct
-	public void init(){
-		System.out.printf("server on http://localhost:%d\n", serverPort);
-	}
+    @PostConstruct
+    public void init() {
+        System.out.printf("server on http://localhost:%d\n", serverPort);
+    }
 
-	@Bean
-	public SEOConfig seo(ThymeleafViewResolver viewResolver){
-		var seo =  new SEOConfig("app name","app description" , List.of(new String[]{"test","seo","Spring boot"}),"author");
-		if(viewResolver!=null){
-			var map = new HashMap<String,Object>();
-			map.put("site",seo);
-			viewResolver.setStaticVariables(map);
-		}
-		return seo;
-	}
+    @Bean
+    public SEOConfig seo(ThymeleafViewResolver viewResolver) {
+        var seo = new SEOConfig("app name", "app description", List.of(new String[]{"test", "seo", "Spring boot"}), "author");
+        if (viewResolver != null) {
+            var map = new HashMap<String, Object>();
+            map.put("site", seo);
+            viewResolver.setStaticVariables(map);
+        }
+        return seo;
+    }
 }
 
 @Component
 @Data
 @ConfigurationProperties(prefix = "server")
 class ServerConfigurationProperties {
-	private int port;
+    private int port;
 }
 
