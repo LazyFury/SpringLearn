@@ -24,7 +24,7 @@ public class ArticleTagRef implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "tag_id", nullable = false)
-    ArticleTag refTag;
+    private ArticleTag refTag;
 
     public ArticleTagRef(Article article, ArticleTag tag) {
         this.article = article;

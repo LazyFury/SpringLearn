@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,7 @@ import java.util.List;
  * @author suke
  * @apiNote Application
  */
-@EnableCaching
+//@EnableCaching
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "Learn Project", description = "这份文档故意留下的，你可以做任何你喜欢的，在不侵犯其他用户权益的前提下"))
 @ComponentScan(basePackages = "io.lazyfury")

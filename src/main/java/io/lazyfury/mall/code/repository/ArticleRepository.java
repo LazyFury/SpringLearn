@@ -20,11 +20,11 @@ public interface ArticleRepository extends CrudRepository<Article, Integer>, Pag
     Page<Article> findAll(@Nonnull Pageable pageable);
 
     @Cacheable(value = "article", key = "#title")
-    Page<Article> findByTitleContainingOrDescriptionContaining(String title, String description, Pageable pageable);
+    Page<Article> findByTitleContainingAndDescriptionContaining(String title, String description, Pageable pageable);
 
 
     @Cacheable(value = "article", key = "#tagId")
-    @Query(value = "select a.* from article_tag_ref t left join article a on t.article_id = a.article_id where t.tag_id = :tag_id", nativeQuery = true,
+    @Query(value = "select a.* from article_tag_ref t left join article a on t.article_id = a.article_id where t.tag_id = :tag_id order by a.created DESC", nativeQuery = true,
             countQuery = "select count(a.article_id) from article_tag_ref t left join article a on t.article_id = a.article_id where t.tag_id = :tag_id")
     Page<Article> findByTag(@Param("tag_id") Long tagId, Pageable pageable);
 
@@ -36,4 +36,6 @@ public interface ArticleRepository extends CrudRepository<Article, Integer>, Pag
     Article findByTitle(String title);
 
     Page<Article> searchByTitleLike(String title, Pageable pageable);
+
+
 }

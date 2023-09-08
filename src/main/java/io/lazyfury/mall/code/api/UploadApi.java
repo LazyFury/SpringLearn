@@ -1,10 +1,9 @@
 package io.lazyfury.mall.code.api;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nonnull;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.val;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -18,17 +17,17 @@ import java.util.HashMap;
 import java.util.Objects;
 
 @RestController
+@Tag(name = "上传Api")
 public class UploadApi {
-    @Autowired
-    private HttpServletRequest request;
-
     File path = new File(ResourceUtils.getURL("file:").getPath());
     File upload;
 
     public UploadApi() throws FileNotFoundException {
         upload = new File(path.getAbsolutePath(), "static/upload");
         if (!upload.exists()) {
-            var _ok = upload.mkdirs();
+            if (!upload.mkdirs()) {
+                throw new Error("创建文件夹失败");
+            }
         }
     }
 

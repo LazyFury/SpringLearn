@@ -5,6 +5,7 @@ import io.lazyfury.mall.code.repository.ArticleRepository;
 import io.lazyfury.mall.code.repository.ArticleTagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,15 +27,15 @@ public class ArticleController {
     @AddSidebarData
     @GetMapping("")
     public ModelAndView getArticleList(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "title", required = false, defaultValue = "") String title,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "") String title,
             @RequestParam(defaultValue = "") String description,
             ModelAndView model
     ) {
         model.setViewName("blog");
-        model.addObject("articles", articleRepository.findByTitleContainingOrDescriptionContaining(
-                title, description, PageRequest.of(page, size)
+        model.addObject("articles", articleRepository.findByTitleContainingAndDescriptionContaining(
+                title, description, PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "created"))
         ));
         return model;
     }
