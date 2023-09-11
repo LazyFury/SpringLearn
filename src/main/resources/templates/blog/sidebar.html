@@ -6,15 +6,14 @@
 </head>
 <body>
 <div th:fragment="sidebar(sidebar_tags)">
-    <div>
-        <h3 class="text-2xl">归档</h3>
-    </div>
+
     <div>
         <h3 class="text-2xl">分类</h3>
         <div>暂无内容</div>
     </div>
 
-    <div th:if="${sidebar_tags}">
+    <!--    标签-->
+    <div class="mt-4" th:if="${sidebar_tags}">
         <h3 class="text-2xl">标签</h3>
         <div class="flex flex-row flex-wrap gap-2">
             <div th:each="t : ${sidebar_tags}" class="bg-gray-500 text-white px-2">
@@ -23,8 +22,37 @@
         </div>
     </div>
 
-    <div>
+    <div class="mt-4">
         <h3 class="text-2xl">最近查看</h3>
+        <div style="font-size:0">
+            <div th:each="article : ${sidebar_last_viewed_articles}">
+                <a class="text-emerald-600 hover:text-emerald-700 text-base mr-2"
+                   th:href="@{/blog/{title}(title=${article.title})}"
+                   th:text="${article.title}"></a>
+                <span class="material-symbols-outlined text-base">
+                visibility
+                </span>
+                <span class="text-base ml-1" th:text="${article.viewsCount}"></span>
+            </div>
+        </div>
+    </div>
+
+
+    <!--    归档-->
+    <div class="mt-4">
+        <h3 class="text-2xl">归档</h3>
+
+        <div th:each="year : ${sidebar_archives}">
+            <h3 class="text-xl" th:text="${year.date}"></h3>
+            <div class="pl-2" th:each="month : ${year.months}">
+                <h4 class="text-lg" th:text="${month.date}"></h4>
+                <div class="pl-2" th:each="day : ${month.days}">
+                    <a th:href="@{/blog/archive(created=${day.date})}" class="text-emerald-600 hover:text-emerald-700"
+                       th:text="${day.date}"></a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 </body>

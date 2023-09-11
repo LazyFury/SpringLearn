@@ -3,6 +3,7 @@ package io.lazyfury.mall.code.controller;
 import io.lazyfury.mall.code.aspect.AddSidebarData;
 import io.lazyfury.mall.code.repository.ArticleRepository;
 import io.lazyfury.mall.code.repository.ArticleTagRepository;
+import io.lazyfury.mall.code.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -13,12 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+
 @Controller
 @RequestMapping("/blog")
 public class ArticleController {
 
     @Autowired
     ArticleRepository articleRepository;
+
+    @Autowired
+    ArticleService articleService;
 
     @Autowired
     ArticleTagRepository articleTagRepository;
@@ -40,6 +45,26 @@ public class ArticleController {
         return model;
     }
 
+    //获取文章归档
+    @AddSidebarData
+    @GetMapping("/archive")
+    public ModelAndView getArticleArchive(ModelAndView model,
+                                          @RequestParam(defaultValue = "") String created
+    ) {
+        model.setViewName("blog");
+        if (created.length() == 4) {
+            model.addObject("articles", articleRepository.findByCreatedByYear(created, PageRequest.of(0, 10)));
+        } else if (created.length() == 7) {
+            model.addObject("articles", articleRepository.findByCreatedByMonth(created, PageRequest.of(0, 10)));
+        } else if (created.length() == 10) {
+            model.addObject("articles", articleRepository.findByCreated(created, PageRequest.of(0, 10)));
+        } else {
+            model.setViewName("blog_archive");
+            model.addObject("articles", articleService.archiveYearMonthAndDay());
+        }
+        return model;
+    }
+
 
     //按标签获取文章列表
     @AddSidebarData
@@ -56,12 +81,21 @@ public class ArticleController {
     }
 
     //获取文章详情
+//    @AddSidebarData
+//    @GetMapping("/{id}")
+//    public ModelAndView getArticle(@PathVariable("id") Integer id,
+//                                   ModelAndView model) {
+//        model.setViewName("blog/detail");
+//        model.addObject("article", articleRepository.findById(id).orElseThrow());
+//        return model;
+//    }
+
     @AddSidebarData
-    @GetMapping("/{id}")
-    public ModelAndView getArticle(@PathVariable("id") Integer id,
+    @GetMapping("/{title}")
+    public ModelAndView getArticle(@PathVariable("title") String title,
                                    ModelAndView model) {
         model.setViewName("blog/detail");
-        model.addObject("article", articleRepository.findById(id).orElseThrow());
+        model.addObject("article", articleService.findByTitle(title).orElseThrow());
         return model;
     }
 }

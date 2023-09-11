@@ -27,6 +27,7 @@ public class Article extends Base {
     @Comment(value = "标题")
     @Nonnull
     @Schema(name = "title", description = "Title of the article")
+    @Column(unique = true)
     private String title;
 
     @Column(length = 1500)
@@ -51,12 +52,13 @@ public class Article extends Base {
     @Transient
     List<Long> tag_ids;
 
+    @Column(columnDefinition = "int default 0", nullable = false)
+    Integer viewsCount = 0;
+
     @PrePersist
     void beforeCreate() {
         if (ext == null) {
             ext = new HashMap<>();
         }
-
     }
-
 }

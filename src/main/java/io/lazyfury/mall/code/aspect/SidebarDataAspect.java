@@ -1,7 +1,10 @@
 package io.lazyfury.mall.code.aspect;
 
 
+import io.lazyfury.mall.code.repository.ArticleRepository;
 import io.lazyfury.mall.code.repository.ArticleTagRepository;
+import io.lazyfury.mall.code.repository.ArticleViewLogRepository;
+import io.lazyfury.mall.code.service.ArticleService;
 import io.lazyfury.mall.code.utils.AOPUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -22,6 +25,15 @@ public class SidebarDataAspect {
     ArticleTagRepository tagRepository;
 
     @Autowired
+    ArticleService articleService;
+
+    @Autowired
+    ArticleRepository articleRepository;
+
+    @Autowired
+    ArticleViewLogRepository articleViewLogRepository;
+
+    @Autowired
     AOPUtils aopUtils;
 
     @Before("@annotation(AddSidebarData)")
@@ -29,6 +41,10 @@ public class SidebarDataAspect {
         System.out.println(Arrays.toString(joinPoint.getArgs()));
 //        model.addObject("tags", tagRepository.findAll());
         Optional<ModelAndView> model = aopUtils.getParamByType(joinPoint, ModelAndView.class);
-        model.ifPresent(m -> m.addObject("sidebar_tags", tagRepository.findAll()));
+        model.ifPresent(m -> {
+            m.addObject("sidebar_tags", tagRepository.findAll());
+            m.addObject("sidebar_archives", articleService.archiveYearMonthAndDay());
+            m.addObject("sidebar_last_viewed_articles", articleRepository.LastViewedArticles());
+        });
     }
 }
