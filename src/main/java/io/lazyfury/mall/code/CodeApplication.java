@@ -40,7 +40,10 @@ public class CodeApplication {
 
     @PostConstruct
     public void init() {
+
         System.out.printf("server on http://localhost:%d\n", serverPort);
+//        swager url
+        System.out.println("swagger url: http://localhost:" + serverPort + "/swagger-ui/index.html");
     }
 
     @Bean
