@@ -1,4 +1,4 @@
-package io.lazyfury.mall.code.service;
+package io.lazyfury.mall.service;
 
 import io.lazyfury.mall.entity.Article;
 import io.lazyfury.mall.entity.ArticleVIewLog;
@@ -94,4 +94,3 @@ public class ArticleService {
     }
 
 }
-
