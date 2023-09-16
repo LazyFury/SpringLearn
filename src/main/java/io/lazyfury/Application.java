@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 import java.util.HashMap;
@@ -23,9 +24,10 @@ import java.util.List;
  * @apiNote Application
  */
 //@EnableCaching
+@EnableWebMvc
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "Learn Project", description = ""))
-@ComponentScan(basePackages = "io.lazyfury")
+@ComponentScan
 public class Application {
 
     @Value("${server.port}")
