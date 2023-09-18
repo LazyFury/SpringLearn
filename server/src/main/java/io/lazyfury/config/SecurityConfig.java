@@ -1,6 +1,7 @@
 package io.lazyfury.config;
 
 
+import io.lazyfury.filter.TokenAuthenticationFilter;
 import io.lazyfury.mall.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
@@ -36,6 +38,10 @@ public class SecurityConfig {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    TokenAuthenticationFilter tokenAuthenticationFilter;
+
+
     @Bean
     public SecurityFilterChain configuration(HttpSecurity http, AuthenticationProvider provider) throws Exception {
         http.userDetailsService(userDetailService).csrf(AbstractHttpConfigurer::disable)
@@ -44,9 +50,17 @@ public class SecurityConfig {
                         request -> request
                                 .requestMatchers(
                                         new MvcRequestMatcher(new HandlerMappingIntrospector(), "/auth/**")
-                                ).authenticated().anyRequest().permitAll()
+                                ).authenticated()
 
-                );
+                                //user api
+                                .requestMatchers("/api/**").hasRole("user")
+                                //admin api
+                                .requestMatchers("/admin/**").hasRole("admin")
+                                .anyRequest().permitAll()
+
+                )
+                .addFilterAfter(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        ;
         return http.build();
     }
 

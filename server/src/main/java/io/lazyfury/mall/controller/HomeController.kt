@@ -20,9 +20,10 @@ class HomeController : ErrorController {
 
     @Override
     @GetMapping("/error")
-    fun error(req: HttpServletRequest, res: HttpServletResponse): ModelAndView {
+    fun error(req: HttpServletRequest, res: HttpServletResponse, err: Exception): ModelAndView {
         val model = ModelAndView("error")
         model.addObject("statusCode", req.getAttribute(RequestDispatcher.ERROR_STATUS_CODE))
+        model.addObject("message", req.getAttribute(RequestDispatcher.ERROR_MESSAGE))
         return model
     }
 

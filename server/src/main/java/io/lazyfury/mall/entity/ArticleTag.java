@@ -26,5 +26,6 @@ public class ArticleTag extends Base {
         this.id = id;
     }
 
+    @Column(unique = true)
     public String name;
 }

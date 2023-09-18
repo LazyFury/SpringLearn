@@ -3,7 +3,10 @@ package io.lazyfury.mall.controller
 import io.lazyfury.mall.entity.User
 import io.lazyfury.mall.repository.CustomUserRepository
 import io.lazyfury.mall.service.UserDetailService
+import io.lazyfury.utils.error.ErrorException
+import io.lazyfury.utils.error.ProjectErrorCode
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -38,7 +41,12 @@ class LoginController {
 
     @Override
     @GetMapping("/login_post")
-    fun login(req: HttpServletRequest, @RequestParam username: String?, @RequestParam password: String?): String {
+    fun login(
+        req: HttpServletRequest,
+        res: HttpServletResponse,
+        @RequestParam username: String?,
+        @RequestParam password: String?
+    ): String {
         if (username != null && password != null) {
             System.out.printf("%s: %s\n", username, password)
             val userDetails = userDetailsService.loadUserByUsername(username)
@@ -53,7 +61,7 @@ class LoginController {
                 return "redirect:/"
             } catch (e: AuthenticationException) {
                 System.out.printf("auth error %s\n", e.message)
-                return "error"
+                throw ErrorException(ProjectErrorCode.USER_PASSWORD_NOT_MATCH, "用户名或密码错误");
             }
         }
         return "error"

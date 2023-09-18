@@ -7,11 +7,9 @@
 <body>
 <div th:fragment="main" class="container mx-auto xl:w-4/5 my-4 flex flex-row items-start gap-2 ">
 
-    <div class="right w-1/5 bg-gray-300 p-2" th:insert="~{blog/sidebar :: sidebar(${sidebar_tags})}">
+    <div class="left w-1/5 bg-gray-300 p-2" th:insert="~{blog/sidebar :: sidebar(${sidebar_tags})}"></div>
 
-    </div>
-
-    <div class="left w-4/5">
+    <div class="right w-4/5">
         <div th:each="year : ${sidebar_archives}">
             <a th:href="@{/blog/archive(created=${year.date})}" class="text-xl" th:text="${year.date}"></a>
             <div class="pl-2" th:each="month : ${year.months}">
@@ -20,7 +18,8 @@
                     <a th:href="@{/blog/archive(created=${day.date})}" th:text="${day.date}"></a>
                     <div class="pl-4" th:each="article : ${day.articles}">
                         <a class="text-emerald-600 hover:text-emerald-700"
-                           th:href="@{/blog/{title}(title=${article.title})}" th:text="${article.title}"></a>
+                           th:href="@{/blog/{title}(title=${article.title})}" th:title="${article.title}"
+                           th:text="${article.title}"></a>
                     </div>
                 </div>
             </div>
