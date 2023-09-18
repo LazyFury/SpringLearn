@@ -1,6 +1,7 @@
 package io.lazyfury.utils.error;
 
 
+@SuppressWarnings("unused")
 public class ProjectErrorCode {
     public static final ErrorCode SUCCESS = new ErrorCode(200, "success");
     public static final ErrorCode FAIL = new ErrorCode(400, "fail");
