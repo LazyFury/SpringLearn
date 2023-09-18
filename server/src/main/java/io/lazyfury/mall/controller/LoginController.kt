@@ -6,7 +6,6 @@ import io.lazyfury.mall.service.UserDetailService
 import io.lazyfury.utils.error.ErrorException
 import io.lazyfury.utils.error.ProjectErrorCode
 import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -43,7 +42,6 @@ class LoginController {
     @GetMapping("/login_post")
     fun login(
         req: HttpServletRequest,
-        res: HttpServletResponse,
         @RequestParam username: String?,
         @RequestParam password: String?
     ): String {
@@ -61,7 +59,7 @@ class LoginController {
                 return "redirect:/"
             } catch (e: AuthenticationException) {
                 System.out.printf("auth error %s\n", e.message)
-                throw ErrorException(ProjectErrorCode.USER_PASSWORD_NOT_MATCH, "用户名或密码错误");
+                throw ErrorException(ProjectErrorCode.USER_PASSWORD_NOT_MATCH, "用户名或密码错误")
             }
         }
         return "error"

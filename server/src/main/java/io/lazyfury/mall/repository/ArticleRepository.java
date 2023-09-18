@@ -52,10 +52,11 @@ public interface ArticleRepository extends CrudRepository<Article, Integer>, Pag
     Page<Article> searchByTitleLike(String title, Pageable pageable);
 
 
-    @Query(value = "select a.*,r.count  from articleview_log al \n" +
-            "inner join (select MAX(al2.id) max_id,COUNT(1) count,   al2.article_article_id from articleview_log al2 group by al2.article_article_id) r ON  r.max_id = al.id\n" +
-            "LEFT  JOIN article a on a.article_id = al.article_article_id \n" +
-            "ORDER  by a.created ASC LIMIT 10",
+    @Query(value = """
+            select a.*,r.count  from articleview_log al\s
+            inner join (select MAX(al2.id) max_id,COUNT(1) count,   al2.article_article_id from articleview_log al2 group by al2.article_article_id) r ON  r.max_id = al.id
+            LEFT  JOIN article a on a.article_id = al.article_article_id\s
+            ORDER  by a.created ASC LIMIT 10""",
             nativeQuery = true)
     List<Article> LastViewedArticles();
 

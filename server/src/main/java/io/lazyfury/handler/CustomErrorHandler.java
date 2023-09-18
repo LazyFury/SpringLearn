@@ -42,6 +42,6 @@ public class CustomErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public JsonResponse<Null> handleErrorException(ErrorException e) {
         System.out.println("cacth global error");
-        return new JsonResponse<Null>(e.code);
+        return new JsonResponse<>(e.code);
     }
 }

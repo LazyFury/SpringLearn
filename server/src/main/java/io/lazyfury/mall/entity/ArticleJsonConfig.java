@@ -20,7 +20,7 @@ public class ArticleJsonConfig implements Serializable {
         try {
             return JSON.toJSONString(this);
         } catch (JSONException e) {
-            System.err.println(e);
+//            System.err.println(e);
             return "{}";
         }
     }

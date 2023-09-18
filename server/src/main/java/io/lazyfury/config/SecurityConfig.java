@@ -14,18 +14,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
-
-import java.util.Collection;
 
 @Configuration
 @EnableWebSecurity
@@ -70,12 +64,9 @@ public class SecurityConfig {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailService);
         provider.setPasswordEncoder(passwordEncoder);
-        provider.setAuthoritiesMapper(new GrantedAuthoritiesMapper() {
-            @Override
-            public Collection<? extends GrantedAuthority> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
-                System.out.println("get authorities");
-                return AuthorityUtils.createAuthorityList("user", "admin");
-            }
+        provider.setAuthoritiesMapper(authorities -> {
+            System.out.println("get authorities");
+            return AuthorityUtils.createAuthorityList("user", "admin");
         });
         return provider;
     }
@@ -83,21 +74,18 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationProvider provider) {
         /*return new ProviderManager(provider);*/
-        return new AuthenticationManager() {
-            @Override
-            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-                System.out.println(authentication.getCredentials());
-                System.out.println(authentication.getPrincipal());
-                System.out.println(authentication.getAuthorities());
-                System.out.println(authentication.getDetails());
+        return authentication -> {
+            System.out.println(authentication.getCredentials());
+            System.out.println(authentication.getPrincipal());
+            System.out.println(authentication.getAuthorities());
+            System.out.println(authentication.getDetails());
 
-                var username = (String) authentication.getPrincipal();
-                var userDetails = userDetailService.loadUserByUsername(username);
-                if (!passwordEncoder.matches((String) authentication.getCredentials(), userDetails.getPassword())) {
-                    throw new BadCredentialsException("密码错误");
-                }
-                return authentication;
+            var username = (String) authentication.getPrincipal();
+            var userDetails = userDetailService.loadUserByUsername(username);
+            if (!passwordEncoder.matches((String) authentication.getCredentials(), userDetails.getPassword())) {
+                throw new BadCredentialsException("密码错误");
             }
+            return authentication;
         };
     }
 

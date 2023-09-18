@@ -2,7 +2,6 @@ package io.lazyfury.mall.controller
 
 import jakarta.servlet.RequestDispatcher
 import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
 import org.springframework.boot.web.servlet.error.ErrorController
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,7 +19,7 @@ class HomeController : ErrorController {
 
     @Override
     @GetMapping("/error")
-    fun error(req: HttpServletRequest, res: HttpServletResponse, err: Exception): ModelAndView {
+    fun error(req: HttpServletRequest): ModelAndView {
         val model = ModelAndView("error")
         model.addObject("statusCode", req.getAttribute(RequestDispatcher.ERROR_STATUS_CODE))
         model.addObject("message", req.getAttribute(RequestDispatcher.ERROR_MESSAGE))
