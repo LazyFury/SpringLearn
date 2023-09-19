@@ -10,6 +10,8 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,6 +47,7 @@ public class SidebarDataAspect {
             m.addObject("sidebar_tags", tagRepository.findAll());
             m.addObject("sidebar_archives", articleService.archiveYearMonthAndDay());
             m.addObject("sidebar_last_viewed_articles", articleRepository.LastViewedArticles());
+            m.addObject("sidebar_most_viewed_articles", articleRepository.findAll(PageRequest.of(0, 10, Sort.by("viewsCount").descending())));
         });
     }
 }

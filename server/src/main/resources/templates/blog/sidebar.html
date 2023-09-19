@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="sidebar(sidebar_tags)">
+<div th:fragment="sidebar">
 
     <div>
         <h3 class="text-2xl">分类</h3>
@@ -37,7 +37,22 @@
         </div>
     </div>
 
+    <!--    热门-->
 
+    <div class="mt-4">
+        <h3 class="text-2xl">热门</h3>
+        <div style="font-size:0">
+            <div th:each="article : ${sidebar_most_viewed_articles}">
+                <a class="text-emerald-600 hover:text-emerald-700 text-base mr-2"
+                   th:href="@{/blog/{title}(title=${article.title})}"
+                   th:text="${article.title}"></a>
+                <span class="material-symbols-outlined text-base">
+                visibility
+                </span>
+                <span class="text-base ml-1" th:text="${article.viewsCount}"></span>
+            </div>
+        </div>
+    </div>
     <!--    归档-->
     <div class="mt-4">
         <h3 class="text-2xl">归档</h3>

@@ -7,7 +7,7 @@
 <body>
 <div th:fragment="main" class="container xl:w-4/5 mx-auto py-4 flex flex-row items-start  gap-2 "
      style="min-height:500px">
-    <div class="left w-1/5 bg-gray-300 p-2" th:insert="~{blog/sidebar :: sidebar(${sidebar_tags})}">
+    <div class="left w-1/5 bg-gray-300 p-2" th:insert="~{blog/sidebar :: sidebar}">
 
     </div>
     <div class="right w-4/5" th:if="${article}">

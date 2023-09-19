@@ -27,4 +27,13 @@ public class MvcErrorHandler {
         model.addObject("message", e.getMessage());
         return model;
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ModelAndView handleError(Exception e, HttpServletResponse response) {
+        var model = new ModelAndView("error");
+        model.addObject("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        model.addObject("message", e.getMessage());
+        return model;
+    }
 }

@@ -56,7 +56,7 @@ public interface ArticleRepository extends CrudRepository<Article, Integer>, Pag
             select a.*,r.count  from articleview_log al\s
             inner join (select MAX(al2.id) max_id,COUNT(1) count,   al2.article_article_id from articleview_log al2 group by al2.article_article_id) r ON  r.max_id = al.id
             LEFT  JOIN article a on a.article_id = al.article_article_id\s
-            ORDER  by a.created ASC LIMIT 10""",
+            ORDER  by al.created DESC LIMIT 10""",
             nativeQuery = true)
     List<Article> LastViewedArticles();
 
