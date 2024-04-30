@@ -1,0 +1,28 @@
+version: "3.7"
+name: "luckycat"
+services:
+  mysql:
+    image: mysql:5.6
+    container_name: luckycat_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: root
+      MYSQL_DATABASE: luckycat
+      MYSQL_USER: luckycat
+      MYSQL_PASSWORD: luckycat
+#      chart set to utf8mb4
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+      TZ: Asia/Shanghai
+
+    ports:
+      - "31306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    command:
+      - mysqld
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --lower_case_table_names=1
+      - --skip-character-set-client-handshake
